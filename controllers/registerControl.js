@@ -14,5 +14,8 @@ module.exports = {
     },
     registerForm: async(req, res) => {
         res.render('register');
+    },
+    registerForm: async(req, res) => {
+        res.render('register');
     }
 }

@@ -17,7 +17,7 @@
             <input type="text" id="nome"><br>
             <label for="senha">Senha:</label><br>
             <input type="password" id="senha"><br>
-            <p><input type="button" value="Entrar" onclick="cadastro()"></p>
+            <p><input type="button" value="Cadastrar-se" onclick="cadastro()"></p>
 
             <script>
                 async function cadastro(){
@@ -31,7 +31,7 @@
                     }
 
                     const response = await fetch('/oapi/register', data);
-                    if(responde.status = 201) window.location.href = "/api/login"
+                    if(responde.ok) window.location.href = "/api/login"
                 }
                 </script>
         </form>
