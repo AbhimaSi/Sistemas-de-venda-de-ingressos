@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Header Page</title>
+</head>
+
+<body>
+    <header>
+        <h1>
+            INGRESSOS
+            {{#usuario}}<a href="/api/loja">LOJA</a>
+            <a href="/api/user/tickets">INVENTÁRIO</a>
+            {{/usuario}}
+            {{^usuario}}
+            <a href="/oapi/login">LOGIN</a>
+            <a href="/oapi/register">CADASTRAR</a>
+            {{/usuario}}
+            {{#usuario}}
+            <a href="/api/user/logs">{{.}}</a>
+            <a href="/oapi/logout">SAIR<a>
+            {{/usuario}}
+        </h1>
+    </header>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Inventario</title>
+    <!-- <script src="../public/javascripts/invService.js"></script> -->
+</head>
+
+<body>
+    <header>
+        {{> header}} <hr>
+    </header>
+    <main>
+        <section>
+
+        <h1>Inventário de {{usuario}}</h1>
+        {{#tickets}}R$ {{preco}} - {{nome}} [{{quantidade}}] {{/tickets}}
+        </section>
+    </main>
+</body>
+
+</html>

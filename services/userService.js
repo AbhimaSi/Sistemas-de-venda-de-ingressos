@@ -8,7 +8,6 @@ module.exports = {
 
     findUser: async function( nome ){
         const user = await User.findOne({ nome: nome });
-
         if (!user) return false;
 
         return user;
@@ -17,29 +16,29 @@ module.exports = {
     selTicket: async function( req, nome ){
         const user = await User.findOne({ _id: req.user._id });
         for(let i = 0; i < user.tickets.length; i++){
-            if(ticket.nome == nome) return ticket;
+            if(user.tickets[i].nome == nome) return user.tickets[i];
         }
-
         return false;
     },
 
-    create: async function(nome, senha, tickets){
-        if (!(await this.findUser(nome))){
+    create: async function(nome, senha, tickets, isAdmin){
+        const user = await User.findOne({ nome: nome }).lean();
+        if (!user){
             try{
-                const user = new User({
+                const newUser = new User({
                     nome: nome,
                     senha: senha,
-                    tickets: tickets
+                    tickets: tickets,
+                    isAdmin: isAdmin
                 })
-                await user.save();
-                return user;
+                await newUser.save();
+                return newUser;
             }
             catch(err){
                 return err;
             }
             
         }
-        console.log('Usuário já existente.')
         return false;
     },
 
@@ -62,16 +61,18 @@ module.exports = {
 
     insertTicket: async function(req, ticket){
         const user = await User.findOne({ _id: req.user._id });
-
         if (!user) return false;
 
-        let ticketUser = await this.selTicket(req, ticket.nome)
-        if(ticketUser == false){
+        let ticketUser = await this.selTicket(req, ticket.nome);
+
+        if(!ticketUser){
             await User.updateOne({ _id: req.user._id }, { $push: { tickets : ticket } });
+            return ticket; //
         }
         else{
             ticketUser.quantidade += ticket.quantidade;
             await User.updateOne({ _id: req.user._id, 'tickets.nome': ticket.nome }, { $set: { 'tickets.$.quantidade': ticketUser.quantidade }});
+
         }
         return ticketUser;
     },

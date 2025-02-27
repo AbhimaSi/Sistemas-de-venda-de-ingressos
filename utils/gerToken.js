@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 function gerToken(user){
-    const secretKey = process.env.SECRETS;
+    const secretKey = 'secr3t_@k2%y';
 
     const payload = {
       _id: user._id,

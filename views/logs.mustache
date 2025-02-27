@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Histórico</title>
+    <!-- <script src="../public/javascripts/logService.js"></script> -->
+</head>
+
+<body>
+    <header>
+        {{> header}} <hr>
+    </header>
+    <main>
+        <section>
+
+        <h1>Histórico de {{usuario}}</h1>
+        {{#logs}} <div>{{.}}</div>{{/logs}}
+
+        </section>
+    </main>
+</body>
+
+</html>

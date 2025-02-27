@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cadastro</title>
+    <!-- <script src="../public/javascripts/registerService.js"></script> -->
+</head>
+
+<body>
+    <header>
+        {{> header}} <hr>
+    </header>
+    <main>
+        <h1>Cadastro</h1>
+        <form>
+            <label for="nome">Nome:</label><br>
+            <input type="text" id="nome"><br>
+            <label for="senha">Senha:</label><br>
+            <input type="password" id="senha"><br>
+            <p><input type="button" value="Entrar" onclick="cadastro()"></p>
+
+            <script>
+                async function cadastro(){
+                    const nome = document.getElementById('nome').value;
+                    const senha = document.getElementById('senha').value;
+
+                    const data = {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ nome: nome, senha: senha })
+                    }
+
+                    const response = await fetch('/oapi/register', data);
+                    if(responde.status = 201) window.location.href = "/api/login"
+                }
+                </script>
+        </form>
+    </main>
+</body>
+
+</html>

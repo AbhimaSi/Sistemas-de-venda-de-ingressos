@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Loja</title>
+    <!-- <script src="../public/javascripts/lojaService.js"></script> -->
+    <style>
+        .quantidade{
+            width: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        {{> header}} <hr>
+    </header>
+    <main>
+        <h2>LOJA</h2>
+        {{#admin}}
+            <section>
+                <hr>
+                <h3>Admin Options</h3>
+                <!--ADD TICKETS-->
+                <div><b>Adicionar Ticket</b></div>
+                <form>
+                    <label for="nomeAdd">Nome:</label>
+                    <input type="text" id="nomeAdd">
+                    <label for="precoAdd">Preço:</label>
+                    <input type="number" class="quantidade" id="precoAdd">
+                    <label for="quantidadeAdd">Quantidade:</label>
+                    <input type="number" min:1 max:999 class="quantidade" id="quantidadeAdd">
+                    <input type="button" value="Adicionar" onclick="adicionar()">
+                </form>
+                <!--UPDATE TICKETS-->
+                <div><b>Atualizar Ticket</b></div>
+                <form>
+                    <label for="nomeUpdate">Nome:</label>
+                    <input type="text" id="nomeUpdate">
+                    <label for="precoUpdate">Preço:</label>
+                    <input type="number" class="quantidade" id='precoUpdate'>
+                    <label for="quantidadeUpdate">Quantidade:</label>
+                    <input type="number" min:1 max:999 class="quantidade" id="quantidadeUpdate">
+                    <input type="button" value="Atualizar" onclick="atualizar()">
+                </form>
+                <!--REMOVE TICKETS-->
+                <div><b>Remover Ticket</b></div>
+                <form>
+                    <label for="nomeRemove">Nome:</label>
+                    <input type="text" id="nomeRemove">
+                    <input type="button" value="Remover" onclick="remover()">
+                </form>
+                <br>
+            </section>
+        {{/admin}}
+        <hr>
+        <section>
+            {{#tickets}}
+                <div>
+                R$ {{preco}},00 - {{nome}} [{{quantidade}}]<br>
+                <button onclick="comprar('{{nome}}')">comprar</button>
+                <input type="number" value="1" min="1" max="999" id="quantidade-{{nome}}" class="quantidade"> 
+                </div>
+            {{/tickets}}
+        </section>
+    </main>
+
+    <script>
+        async function comprar(nome){
+            const quantidade = document.getElementById(`quantidade-${nome}`).value;
+
+            const data = {
+                method: 'POST',
+            }
+
+            const response = await fetch(`/api/loja/${nome}/${quantidade}`, data);
+            if(response.ok){
+                alert('Compra realizada com sucesso!');
+                window.location.reload();
+            }
+            else{
+                alert('Erro ao realizar compra.')
+            }
+        }
+
+        async function adicionar(){
+            const nome = document.getElementById('nomeAdd').value;
+            const preco = document.getElementById('precoAdd').value;
+            const quantidade = document.getElementById('quantidadeAdd').value;
+
+            const data = { method: 'POST' };
+            const response = await fetch(`/api/admin/loja/add/${nome}/${preco}/${quantidade}`, data)
+
+            if(response.ok){
+                alert('Ticket adicionado com sucesso!');
+                window.location.reload();
+            }
+
+            else if(response.status == 409){
+                alert('Ticket já existente.');
+            }
+
+            else{
+                alert('Erro ao adicionar ticket.');
+            }
+        }
+
+        async function atualizar(){
+            const nome = document.getElementById('nomeUpdate').value;
+            const preco = document.getElementById('precoUpdate').value;
+            const quantidade = document.getElementById('quantidadeUpdate').value;
+
+            const data = { method: 'PUT' };
+            const response = await fetch(`/api/admin/loja/update/${nome}/${preco}/${quantidade}`, data)
+
+            if(response.ok){
+                alert('Ticket atualizado com sucesso!');
+                window.location.reload();
+            }
+            else{
+                alert('Erro ao atualizar ticket.');
+            }
+        }
+
+        async function remover(){
+            const nome = document.getElementById('nomeRemove').value;
+
+            const data = { method: 'DELETE' };
+            const response = await fetch('/api/admin/loja/remove/'+nome, data);
+
+            if(response.ok){
+                alert('Ticket removido com sucesso!');
+                window.location.reload();
+            }
+            else{
+                alert('Erro ao remover ticket.');
+            }
+        }
+    </script>
+</body>
+
+</html>

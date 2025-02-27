@@ -4,7 +4,7 @@ const userService = require('./userService.js');
 exports.login = async function(nome, senha){
     const user = await userService.findUser( nome );
 
-    if(user != false){
+    if(user){
         if(user.senha === senha){
             const token = gerToken(user);
             console.log("Login realizado com sucesso! token: " + token);
